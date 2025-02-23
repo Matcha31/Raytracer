@@ -7,7 +7,9 @@
 
 class Image {
 public:
+    // Dimensions de l'image
     int width, height;
+    // Pixels
     std::vector<Color> pixels;
 
     Image(int w, int h) : width(w), height(h), pixels(w * h) {}
@@ -16,6 +18,7 @@ public:
         pixels[y * width + x] = c;
     }
 
+    // Enregistre l'image dans un fichier PPM
     void savePPM(const std::string& filename) const {
         std::ofstream file(filename, std::ios::out | std::ios::binary);
         file << "P3\n" << width << " " << height << "\n255\n";
@@ -29,4 +32,3 @@ public:
 };
 
 #endif // IMAGE_H
-
