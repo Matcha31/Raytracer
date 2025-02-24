@@ -2,13 +2,16 @@
 #define SPHERE_H
 
 #include "object.h"
+#include "../uniform_texture.h"
 
 class Sphere : public Object {
 public:
     Vector3 center;
     float radius;
 
-    Sphere(Vector3 c, float r, Color col) : Object(col), center(c), radius(r) {}
+    Sphere(const Vector3& center, float radius, const Color& color) : Object(), center(center), radius(radius) {
+        textureMaterial = new UniformTexture(color, color, 0.0f);
+    }
 
     bool intersect(const Ray& ray, float& t) const override {
         // Calculer la distance entre le centre de la sphère et le point d'intersection du rayon
@@ -21,9 +24,28 @@ public:
         // Pas d'intersection
         if (discriminant < 0) return false;
 
-        t = (-b - sqrt(discriminant)) / (2.0 * a);
-        return (t > 0);
+        // Calculer les intersections
+        float t1 = (-b - sqrt(discriminant)) / (2.0 * a);
+        float t2 = (-b + sqrt(discriminant)) / (2.0 * a);
+        
+        if (t1 > 0 ) {
+            t = t1;
+            return true;
+        } if (t2 > 0) {
+            t = t2;
+            return true;
+        }
+        return false;
     }
+
+    Vector3 getNormal(const Vector3& point) const override {
+        return (point - center).normalize();
+    }
+
+    void getMaterialProperties(const Vector3& position, Color &kd, Color &ks, float &shininess) override {
+        textureMaterial->getProperties(position, kd, ks, shininess);
+    }
+
 };
 
 #endif // SPHERE_H

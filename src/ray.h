@@ -2,6 +2,7 @@
 #define RAY_H
 
 #include "vector3.h"
+#include "point3.h"
 
 class Ray {
 public:
@@ -14,6 +15,12 @@ public:
     Vector3 at(float t) const {
         return origin + direction * t;
     }
+
+    // Verification des ombrages
+    Ray shadowRay(const Point3& point, const Vector3& normal) const {
+        return Ray(point + normal * 0.001f, normal);
+    }
+
 };
 
 #endif // RAY_H

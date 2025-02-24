@@ -17,6 +17,9 @@ public:
     Vector3 operator*(float s) const { return Vector3(x * s, y * s, z * s); }
     Vector3 operator/(float s) const { return Vector3(x / s, y / s, z / s); }
 
+    float operator[](int i) const { return *(&x + i); }
+    float& operator[](int i) { return *(&x + i); }
+
     // Longueur
     float length() const { return std::sqrt(x * x + y * y + z * z); }
 
