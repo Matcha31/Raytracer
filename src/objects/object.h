@@ -1,8 +1,9 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include "../ray.h"
 #include "../color.h"
+#include "../light.h"
+#include "../ray.h"
 
 class Object {
 public:

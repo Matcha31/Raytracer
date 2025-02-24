@@ -12,13 +12,8 @@ public:
     std::vector<Light*> lights;
 
 
-    void addLight(Light* light) {
-        objects.push_back(light);
-    }
-
-    void addObject(Object* obj) {
-        objects.push_back(obj);
-    }
+    void addLight(Light* light) { lights.push_back(light); }
+    void addObject(Object* obj) { objects.push_back(obj); }
 
     // Teste l'intersection avec tous les objets et retourne l'objet le plus proche
     bool intersect(const Ray& ray, float& t_min, Object*& hitObject) const {
