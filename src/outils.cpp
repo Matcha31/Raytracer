@@ -1,13 +1,22 @@
 #include "outils.h"
+#include "color.h"
 #include "vector3.h"
+#include "objects/sphere.h"
 
-// Color ray_color(const Ray& ray) {
-//   Vector3 unit_direction = ray.direction.normalize();
-//   auto t = 0.5 * (unit_direction.y + 1.0);
-//   return (1.0 - t) * Color(1.0, 1.0, 1.0) + t * Color(0.5, 0.7, 1.0);
-// }
-
-// float hit_sphere(const Point3& center, float radius, const Ray& ray) {
-//   Vector3 oc = ray.origin - center;
-//
-// }  
+void CastRay(Scene &scene, Ray &ray, Image &img, int x, int y){
+  float t_min;
+  Object* hitObject = nullptr;
+  Color finalColor = Color(0, 0, 0);
+  if (scene.intersect(ray, t_min, hitObject)) {
+    Vector3 hitPoint = ray.at(t_min);
+    Vector3 normal = hitObject->getNormal(hitPoint);
+    Color col1, col2;
+    float shininess;
+    hitObject->getTextureAt(hitPoint, col1, col2, shininess);
+    finalColor = col1 * col2 * std::pow(std::max(0.0f, normal.dot(ray.direction)), shininess);
+    finalColor = finalColor.clamp();
+    img.setPixel(x, y, finalColor);
+  } else {
+    img.setPixel(x, y, Color(0.2, 0.2, 0.2));
+  }
+}
