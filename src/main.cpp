@@ -1,6 +1,7 @@
 #include <iostream>
 #include "point3.h"
 #include "scene.h"
+#include "uniform_texture.h"
 #include "vector3.h"
 #include "color.h"
 #include "ray.h"
@@ -11,32 +12,26 @@
 #include "outils.h"
 
 int main() {
-    const int width = 1000, height = 500;
-    Image img(width, height);
-    
-    // Setup camera
-    Camera camera(Point3(0, 0, 0), Point3(0, 0, -1), Vector3(0, 1, 0), 90.0, float(width) / float(height));
-    
-    // Setup scene
-    Scene scene;
-    scene.addObject(new Sphere(Point3(0, 0, -5), 1, Color(1, 0, 0)));
-    
-    // Source limineuse
-    scene.addLight(new PointLight(Point3(0, 0, 0), Color(1, 1, 1))); // Lumiere blanche a (0, 0, 0)
+    // Creation de la camera
+    Camera camera = Camera(Point3(0, 0, 0), Point3(0, 0, -1), Vector3(0, 1, 0), M_PI/2, M_PI/2, 0.1);
 
-    // Raycasting avec lumiere
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            float u = float(x) / width;
-            float v = float(y) / height;
+    // Creation de la scene
+    Scene scene = Scene(camera);
 
-            Ray ray = camera.getRay(u, v, width, height);
-            CastRay(scene, ray, img, x, y);
-        }
-    }
+    // UniformTexture* redMateriel = new UniformTexture(Color(0.8,0.2,0.2), Color(1.0,1.0,1.0), 50);
+    // Sphere* sphere = new Sphere(Point3(0,0,-5), 0.5, redMateriel);
+    // scene.addObject(sphere);
 
-    img.savePPM("output.ppm");
-    std::cout << "Image saved as output.ppm" << std::endl;
+    UniformTexture* blueMateriel = new UniformTexture(Color(0.2,0.2,0.8), Color(1.0,1.0,1.0), 50);
+    Sphere* sphere2 = new Sphere(Point3(0,0,5), 1, blueMateriel);
+    scene.addObject(sphere2);
+    
+    int width = 800, height = 600;
+    Image image = Image(width, height);
+
+    RenderImage(scene, image);
+    image.savePPM("output.ppm");
 
     return 0;
+    
 }

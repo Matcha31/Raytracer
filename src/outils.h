@@ -8,6 +8,7 @@
 #include "scene.h"
 #include "camera.h"
 
-void CastRay(Scene &scene, Ray &ray, Image &img, int x, int y);
+Color CastRay(Scene &scene, Ray &ray, Image &img, int x, int y);
+void RenderImage(const Scene& scene, Image& image);
 
 #endif

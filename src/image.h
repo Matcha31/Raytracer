@@ -6,13 +6,15 @@
 #include "color.h"
 
 class Image {
-public:
-    // Dimensions de l'image
-    int width, height;
-    // Pixels
-    std::vector<Color> pixels;
+protected:
+  int width, height;
+  std::vector<Color> pixels;
 
+public:
     Image(int w, int h) : width(w), height(h), pixels(w * h) {}
+
+    int getWidth() const { return width; }
+    int getHeight() const { return height; }
 
     void setPixel(int x, int y, const Color& c) {
         pixels[y * width + x] = c;

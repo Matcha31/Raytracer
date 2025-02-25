@@ -4,10 +4,11 @@
 #include "texture_material.h"
 
 class UniformTexture : public TextureMaterial {
-public:
+private:
   Color kd, ks;
   float shininess;
 
+public:
   UniformTexture(Color kd, Color ks, float shininess) : kd(kd), ks(ks), shininess(shininess) {}
   
   void getProperties(const Vector3& position, Color &kd, Color &ks, float &shininess) const override {
