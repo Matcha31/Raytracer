@@ -20,6 +20,8 @@ public:
     const Object& getObject(int index) const { return *objects[index]; }
     const Light& getLight(int index) const { return *lights[index]; }
     const Camera& getCamera() const { return camera; }
+    const std::vector<Light*>& getLights() const { return lights; }
+    const std::vector<Object*>& getObjects() const { return objects; }
 
     // Méthodes pour ajouter des objets et des lumières
     void addLight(Light* light) { lights.push_back(light); }

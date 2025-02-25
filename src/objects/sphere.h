@@ -6,9 +6,9 @@
 
 class Sphere : public Object {
   private:
-    Vector3 center;
     float radius;
   public:
+    Vector3 center; // tmp
     Sphere(const Vector3& center, float radius, UniformTexture* texture) : Object(texture), center(center), radius(radius) {}
 
     Sphere(const Vector3& center, float radius, const Color& color) : Object(), center(center), radius(radius) {
@@ -17,7 +17,8 @@ class Sphere : public Object {
 
     bool intersect(const Ray& ray, float& t) const override {
       // Calculer la distance entre le centre de la sphère et le point d'intersection du rayon
-      Vector3 oc = ray.getOrigin() - center;
+
+      Vector3 oc = center - ray.getOrigin();
       Vector3 dir = ray.getDirection();
 
       float a = dir.dot(dir);
@@ -45,7 +46,7 @@ class Sphere : public Object {
     }
 
     Vector3 getNormal(const Vector3& point) const override {
-      return (point - center).normalize();
+      return Vector3(point.x - center.x, point.y - center.y, point.z - center.z).normalize();
     }
 
     void getMaterialProperties(const Vector3& position, Color &kd, Color &ks, float &shininess) override {

@@ -3,20 +3,23 @@
 
 #include "color.h"
 #include "light.h"
-#include "point3.h"
 
 class PointLight : public Light {
 public:
-  Point3 position;
+  Vector3 position;
   Color intensity;
 
-  PointLight(const Point3& position, const Color& intensity) : Light(), position(position), intensity(intensity) {}
+  PointLight(const Vector3& position, const Color& intensity) : Light(), position(position), intensity(intensity) {}
 
-  Color getIntensity(const Point3& position) const override {
+  Color getIntensity(const Vector3& position) const override {
     return intensity;
   }
 
-  Vector3 getDirection(const Point3& position) const override {
+  Vector3 getPosition() const override {
+    return position;
+  }
+
+  Vector3 getDirection(const Vector3& position) const override {
     return (position - this->position).normalize();
   }
 

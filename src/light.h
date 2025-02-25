@@ -1,7 +1,6 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
-#include "point3.h"
 #include "vector3.h"
 #include "color.h"
 
@@ -12,8 +11,9 @@ public:
 
     virtual ~Light() = default;
 
-    virtual Color getIntensity(const Point3& position) const = 0;
-    virtual Vector3 getDirection(const Point3& position) const = 0;
+    virtual Color getIntensity(const Vector3& position) const = 0;
+    virtual Vector3 getDirection(const Vector3& position) const = 0;
+    virtual Vector3 getPosition() const = 0;
 
 };
 
