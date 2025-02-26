@@ -8,12 +8,12 @@
 #include "objects/object.h"
 
 class Scene {
-protected:
+  protected:
     std::vector<Object*> objects;
     std::vector<Light*> lights;
     Camera camera;
 
-public:
+  public:
     // Constructeur avec une caméra
     Scene(const Camera& camera) : camera(camera) {}
 
@@ -29,19 +29,20 @@ public:
 
     // Teste l'intersection avec tous les objets et retourne l'objet le plus proche
     bool intersect(const Ray& ray, float& t_min, Object*& hitObject) const {
-        t_min = std::numeric_limits<float>::max();
-        bool hit = false;
+      t_min = std::numeric_limits<float>::max();
+      bool hit = false;
 
-        for (Object* obj : objects) {
-            float t;
-            if (obj->intersect(ray, t) && t < t_min) {
-                t_min = t;
-                hitObject = obj;
-                hit = true;
-            }
+      for (Object* obj : objects) {
+        HitRecord record;
+        if (obj->intersect(ray, record) && record.t < t_min) {
+          t_min = record.t;
+          hitObject = obj;
+          hit = true;
         }
-        return hit;
+      }
+      return hit;
     }
+
 
 };
 

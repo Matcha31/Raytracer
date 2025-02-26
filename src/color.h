@@ -1,7 +1,10 @@
 #ifndef COLOR_H
 #define COLOR_H
 
+#include <algorithm>
 #include <iostream>
+
+#define std_clamp(x, m, M) std::max(std::min(x, M), m)
 
 class Color {
 public:
@@ -20,8 +23,7 @@ public:
     Color operator+(const Color& c) const { return Color(r + c.r, g + c.g, b + c.b); }
 
     // Normalisation de la couleur (renvoie un vecteur de norme 1)
-    Color clamp() const { return Color(std::min(r, 1.0f), std::min(g, 1.0f), std::min(b, 1.0f)); }
-
+    Color clamp() const { return Color(std_clamp(r, 0.0f, 1.0f), std_clamp(g, 0.0f, 1.0f), std_clamp(b, 0.0f, 1.0f)); }
     // Affichage pour le debug
     friend std::ostream& operator<<(std::ostream& out, const Color& c) {
         out << "(" << c.r << ", " << c.g << ", " << c.b << ")";

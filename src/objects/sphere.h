@@ -15,38 +15,40 @@ class Sphere : public Object {
       textureMaterial = new UniformTexture(color, color, 0.0f);
     }
 
-    bool intersect(const Ray& ray, float& t) const override {
+    bool intersect(const Ray& ray, HitRecord& record) const override {
       // Calculer la distance entre le centre de la sphère et le point d'intersection du rayon
 
-      Vector3 oc = center - ray.getOrigin();
+      Vector3 oc = ray.getOrigin() - center;
       Vector3 dir = ray.getDirection();
 
-      float a = dir.dot(dir);
-      float b = 2 * oc.dot(dir);
-      float c = oc.dot(oc) - radius * radius;
+      float a = dir.length_squared();
+      float h = oc.dot(dir);
+      float c = oc.length_squared() - radius * radius;
 
-      float discriminant = b * b - 4 * a * c;
+      float discriminant = h * h - a * c;
 
       if (discriminant < 0) {
         return false;
-      } else {
-        float sqrtDiscriminant = sqrt(discriminant);
-        float t1 = (-b - sqrtDiscriminant) / (2 * a);
-        float t2 = (-b + sqrtDiscriminant) / (2 * a);
-
-        if (t1 > 0) {
-          t = t1;
-        } else if (t2 > 0) {
-          t = t2;
-        } else {
+      }
+      float sqrtdt = sqrt(discriminant);
+      float root = (-h - sqrtdt) / a;
+      if (root < ray.getTMin() || root > ray.getTMax()) {
+        root = (-h + sqrtdt) / a;
+        if (root < ray.getTMin() || root > ray.getTMax()) {
           return false;
         }
-        return true;
       }
+
+      record.t = root;
+      record.point = ray.at(record.t);
+      Vector3 outwardNormal = (record.point - center).normalize();
+      record.setFaceNormal(ray, outwardNormal);
+
+      return true;
     }
 
     Vector3 getNormal(const Vector3& point) const override {
-      return Vector3(point.x - center.x, point.y - center.y, point.z - center.z).normalize();
+      return (point - center).normalize();
     }
 
     void getMaterialProperties(const Vector3& position, Color &kd, Color &ks, float &shininess) override {
@@ -55,6 +57,10 @@ class Sphere : public Object {
         std::exit(1);
       }
       textureMaterial->getProperties(position, kd, ks, shininess);
+    }
+
+    const Vector3 getCenter() const override {
+      return center;
     }
 
 };

@@ -20,7 +20,7 @@ public:
   }
 
   Vector3 getDirection(const Vector3& position) const override {
-    return (position - this->position).normalize();
+    return (this->position - position).normalize();
   }
 
 };
