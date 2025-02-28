@@ -28,14 +28,15 @@ class Scene {
     void addObject(Object* obj) { objects.push_back(obj); }
 
     // Teste l'intersection avec tous les objets et retourne l'objet le plus proche
-    bool intersect(const Ray& ray, float& t_min, Object*& hitObject) const {
-      t_min = std::numeric_limits<float>::max();
+    bool intersect(const Ray& ray, HitRecord& record, Object*& hitObject) const {
+      float t_min = std::numeric_limits<float>::max();
+      HitRecord tmpRecord;
       bool hit = false;
 
       for (Object* obj : objects) {
-        HitRecord record;
-        if (obj->intersect(ray, record) && record.t < t_min) {
-          t_min = record.t;
+        if (obj->intersect(ray, tmpRecord) && tmpRecord.t < t_min) {
+          t_min = tmpRecord.t;
+          record = tmpRecord;
           hitObject = obj;
           hit = true;
         }

@@ -9,11 +9,7 @@ class Sphere : public Object {
     float radius;
   public:
     Vector3 center; // tmp
-    Sphere(const Vector3& center, float radius, UniformTexture* texture) : Object(texture), center(center), radius(radius) {}
-
-    Sphere(const Vector3& center, float radius, const Color& color) : Object(), center(center), radius(radius) {
-      textureMaterial = new UniformTexture(color, color, 0.0f);
-    }
+    Sphere(const Vector3& center, float radius, TextureMaterial *texture) : Object(texture), center(center), radius(radius) {}
 
     bool intersect(const Ray& ray, HitRecord& record) const override {
       // Calculer la distance entre le centre de la sphère et le point d'intersection du rayon
@@ -49,14 +45,6 @@ class Sphere : public Object {
 
     Vector3 getNormal(const Vector3& point) const override {
       return (point - center).normalize();
-    }
-
-    void getMaterialProperties(const Vector3& position, Color &kd, Color &ks, float &shininess) override {
-      if(textureMaterial == nullptr){
-        std::cout << "No texture" << std::endl;
-        std::exit(1);
-      }
-      textureMaterial->getProperties(position, kd, ks, shininess);
     }
 
     const Vector3 getCenter() const override {

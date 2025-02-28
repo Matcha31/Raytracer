@@ -6,7 +6,7 @@
 #include "ray.h"
 #include "scene.h"
 
-Color CastRay(Scene &scene, Ray &ray, int count);
+Color CastRay(Scene &scene, Ray &ray, int depth);
 void RenderImage(const Scene& scene, Image& image);
 
 #endif // RAYCASTING_H

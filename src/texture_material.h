@@ -5,11 +5,17 @@
 #include "color.h"
 
 class TextureMaterial {
+protected:
+  Color kd, ks;
+  float ka;
+  float shininess;
+  float reflectivity;
+
 public:
 
   virtual ~TextureMaterial() = default;
 
-  virtual void getProperties(const Vector3& position, Color &kd, Color &ks, float &shininess) const = 0;
+  virtual void getProperties(const Vector3& position, Color &kd, Color &ks, float &ka, float &shininess, float &reflectivity) const = 0;
 };
 
 #endif // TEXTURE_MATERIAL_H

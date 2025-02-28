@@ -38,14 +38,8 @@ public:
     virtual const Vector3 getCenter() const = 0;
 
     // Récupérer les propriétés du matériau
-    virtual void getMaterialProperties(const Vector3& position, Color &kd, Color &ks, float &shininess){
-        if(textureMaterial != nullptr){
-            textureMaterial->getProperties(position, kd, ks, shininess);
-        }
-    }
-
-    virtual void getTextureAt(const Vector3& position, Color &kd, Color &ks, float &shininess) const {
-        textureMaterial->getProperties(position, kd, ks, shininess);
+    void getTextureAt(const Vector3& position, Color &kd, Color &ks, float &ka, float &shininess, float &reflectivity) const {
+        textureMaterial->getProperties(position, kd, ks, ka, shininess, reflectivity);
     }
 };
 
