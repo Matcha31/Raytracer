@@ -3,7 +3,8 @@
 
 #include <limits>
 #include <vector>
-#include "light.h"
+#include "cube_map.h"
+#include "light/light.h"
 #include "camera.h"
 #include "objects/object.h"
 
@@ -12,10 +13,15 @@ class Scene {
     std::vector<Object*> objects;
     std::vector<Light*> lights;
     Camera camera;
+    // Optional cube_map
+    CubeMap* cubeMap = nullptr;
 
   public:
-    // Constructeur avec une caméra
     Scene(const Camera& camera) : camera(camera) {}
+    Scene(const Camera& camera, CubeMap* cubeMap) : camera(camera), cubeMap(cubeMap) {}
+    Scene(const Camera& camera, const std::string &pathToCubeMap) : camera(camera) {
+      cubeMap = new CubeMap(pathToCubeMap); 
+    }
 
     const Object& getObject(int index) const { return *objects[index]; }
     const Light& getLight(int index) const { return *lights[index]; }
@@ -30,10 +36,10 @@ class Scene {
     // Teste l'intersection avec tous les objets et retourne l'objet le plus proche
     bool intersect(const Ray& ray, HitRecord& record, Object*& hitObject) const {
       float t_min = std::numeric_limits<float>::max();
-      HitRecord tmpRecord;
       bool hit = false;
 
       for (Object* obj : objects) {
+        HitRecord tmpRecord;
         if (obj->intersect(ray, tmpRecord) && tmpRecord.t < t_min) {
           t_min = tmpRecord.t;
           record = tmpRecord;
@@ -44,6 +50,7 @@ class Scene {
       return hit;
     }
 
+    CubeMap* getCubeMap() const { return cubeMap; }
 
 };
 

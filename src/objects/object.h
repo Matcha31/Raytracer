@@ -2,7 +2,7 @@
 #define OBJECT_H
 
 #include "../color.h"
-#include "../light.h"
+#include "../light/light.h"
 #include "../ray.h"
 #include "../texture_material.h"
 
@@ -22,11 +22,11 @@ class HitRecord {
 
 class Object {
 protected:
+    Vector3 center;
     TextureMaterial* textureMaterial;
 
 public:
-
-    Object(TextureMaterial* textureMaterial = nullptr) : textureMaterial(textureMaterial) {}
+    Object(TextureMaterial* textureMaterial = nullptr, const Vector3& center = Vector3(0, 0, 0)) : textureMaterial(textureMaterial), center(center) {}
     virtual ~Object() = default;
     
     // Intersecter le rayon avec l'objet

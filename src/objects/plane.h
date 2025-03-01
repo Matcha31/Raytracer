@@ -8,24 +8,28 @@
 class Plane : public Object {
   private:
     Vector3 normal;
-    // Distance depuis l'origine
-    float d;
+    float distanceFromOrigin;
 
   public:
-    Plane(const Vector3 &normal, float d, TextureMaterial *texture) : Object(texture), normal(normal.normalize()), d(d) {}
+    Plane(TextureMaterial *texture, const Vector3 &center, const Vector3 &normal) : Object(texture, center) {
+      this->normal = normal.normalize();
+      this->distanceFromOrigin = -center.dot(normal);
+    }
 
     bool intersect(const Ray &ray, HitRecord &record) const override {
       float denom = normal.dot(ray.getDirection());
+
       if (std::fabs(denom) > 1e-6) {
-        float t = -(normal.dot(ray.getOrigin()) + d) / denom;
+        float t = -(ray.getOrigin().dot(normal) + distanceFromOrigin) / denom;
         if (t >= ray.getTMin() && t <= ray.getTMax()) {
           record.t = t;
-          record.point = ray.at(record.t);
+          record.point = ray.at(t);
           record.setFaceNormal(ray, normal);
           return true;
         }
         return false;
       }
+
       return false;
     }
 
@@ -34,7 +38,7 @@ class Plane : public Object {
     }
 
     const Vector3 getCenter() const override {
-      return Vector3(0, 0, 0);
+      return center;
     }
 };
 

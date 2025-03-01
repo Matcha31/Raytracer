@@ -1,7 +1,8 @@
 #include "raycasting.h"
 #include "color.h"
+#include "cube_map.h"
 #include "image.h"
-#include "light.h"
+#include "light/light.h"
 #include "objects/object.h"
 #include "scene.h"
 #include "vector3.h"
@@ -9,8 +10,6 @@
 #include <cmath>
 #include <cstdlib>
 #include <memory>
-
-extern Color ambientLight;
 
 Color CastRay(const Scene &scene, Ray &ray, int depth) {
   if (depth <= 0) {
@@ -27,38 +26,49 @@ Color CastRay(const Scene &scene, Ray &ray, int depth) {
     float shininess, ka, reflectivity;
     hitObject->getTextureAt(hitPoint, kd, ks, ka, shininess, reflectivity);
 
-    Color finalColor = ambientLight * ka;
+    Color finalColor = Color(0.0, 0.0, 0.0);
 
     for (Light* light : scene.getLights()){
       Vector3 lightDirection = light->getDirection(hitPoint);
       float diff = std::max(normal.dot(lightDirection), 0.0f);
-
-      // Refléction
-      if (reflectivity > 0.0f){
-        Vector3 viewDir = (ray.getDirection() * -1.0f).normalize();
-        Vector3 reflectDir = ((normal * 2.0f * normal.dot(viewDir)) - viewDir).normalize();
-
-        Ray reflectedRay(hitPoint + normal * 0.001f, reflectDir);
-        Color reflectedColor = CastRay(scene, reflectedRay, depth - 1);
-
-        finalColor = finalColor + (reflectedColor * reflectivity);
-      }
 
       // Verifier si la lumiere est bloque par un autre objet
       Ray shadowRay(hitPoint + normal * 0.001f, lightDirection);
       HitRecord shadowRecord;
       Object* shadowObject = nullptr;
 
+      float numShadowRays = 16;
+      float shadowAmount = 0.0f;
+
       if (!scene.intersect(shadowRay, shadowRecord, shadowObject)){
         finalColor = finalColor + (kd * light->getIntensity(hitPoint) * diff);
+
         // Speculaires
-        finalColor = finalColor + (ks * light->getIntensity(hitPoint) * pow(std::max(normal.dot(lightDirection), 0.0f), shininess));
+        Vector3 viewDir = (ray.getDirection() * -1.0f).normalize();
+        Vector3 reflectDir = ((normal * 2.0f * normal.dot(viewDir)) - viewDir).normalize();
+        float spec = std::pow(std::max(reflectDir.dot(lightDirection), 0.0f), shininess);
+        finalColor = finalColor + (ks * light->getIntensity(hitPoint) * spec);
       }
+    }
+
+    // Refléction
+    if (reflectivity > 0.0f){
+      Vector3 viewDir = (ray.getDirection() * -1.0f).normalize();
+      Vector3 reflectDir = ((normal * 2.0f * normal.dot(viewDir)) - viewDir).normalize();
+
+      Ray reflectedRay(hitPoint + normal * 0.001f, reflectDir);
+      Color reflectedColor = CastRay(scene, reflectedRay, depth - 1);
+
+      finalColor = finalColor + (reflectedColor * reflectivity);
     }
 
     return finalColor = finalColor.clamp();
   }
 
+  // CubeMap* cubeMap = scene.getCubeMap();
+  // if (cubeMap != nullptr){
+  //   return cubeMap->getPixel(ray.getDirection());
+  // }
   return Color(0.2, 0.2, 0.2); // Fond noir
 }
 

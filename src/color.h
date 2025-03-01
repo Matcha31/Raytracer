@@ -13,14 +13,13 @@ public:
     Color() : r(0), g(0), b(0) {}
     Color(float r, float g, float b) : r(r), g(g), b(b) {}
 
-    // Multiplication par un scalaire
     Color operator*(float s) const { return Color(r * s, g * s, b * s); }
-
-    // Multiplication de couleurs
     Color operator*(const Color& c) const { return Color(r * c.r, g * c.g, b * c.b); }
-
-    // Addition de couleurs
+    Color operator/(float s) const { return Color(r / s, g / s, b / s); }
+    Color operator/(const Color& c) const { return Color(r / c.r, g / c.g, b / c.b); }
+    Color operator+(float s) const { return Color(r + s, g + s, b + s); }
     Color operator+(const Color& c) const { return Color(r + c.r, g + c.g, b + c.b); }
+
 
     // Normalisation de la couleur (renvoie un vecteur de norme 1)
     Color clamp() const { return Color(std_clamp(r, 0.0f, 1.0f), std_clamp(g, 0.0f, 1.0f), std_clamp(b, 0.0f, 1.0f)); }
