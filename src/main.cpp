@@ -20,8 +20,6 @@ int main() {
 
     // PointLight* light1 = new PointLight(Vector3(20, 10, 0), Color(1.0, 1.0, 1.0));
     // scene.addLight(light1);
-    // PointLight* light2 = new PointLight(Vector3(7, 2, 0), Color(1.0, 1.0, 1.0));
-    // scene.addLight(light2);
     DirectionalLight* light3 = new DirectionalLight(Vector3(3,2,0), Color(1.0, 1.0, 0.8));
     scene.addLight(light3);
     // SpotLight* light4 = new SpotLight(Vector3(0, 10, 0), Color(1.0, 1.0, 1.0), M_PI/2);

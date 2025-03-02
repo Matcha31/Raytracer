@@ -11,7 +11,7 @@ public:
   PointLight(const Vector3& position, const Color& intensity) : Light(intensity), position(position) {}
 
   Color getIntensity(const Vector3& position) const override {
-    float distanceSquared = (this->position - position).length_squared();
+    float distanceSquared = this->getDirection(position).lengthSquared();
     return intensity / distanceSquared;
   }
 

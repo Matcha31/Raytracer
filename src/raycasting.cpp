@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <memory>
 
+
 Color CastRay(const Scene &scene, Ray &ray, int depth) {
   if (depth <= 0) {
     return Color(0.0, 0.0, 0.0);
@@ -30,26 +31,43 @@ Color CastRay(const Scene &scene, Ray &ray, int depth) {
 
     for (Light* light : scene.getLights()){
       Vector3 lightDirection = light->getDirection(hitPoint);
+
+      int numberShadowRays = 16;
+      float shadowAmount = 0.0f;
       float diff = std::max(normal.dot(lightDirection), 0.0f);
 
-      // Verifier si la lumiere est bloque par un autre objet
-      Ray shadowRay(hitPoint + normal * 0.001f, lightDirection);
-      HitRecord shadowRecord;
-      Object* shadowObject = nullptr;
+      for (int i = 0; i < numberShadowRays; i++){
+        Vector3 jitteredLightDirection;
+        if (light->isPointLight()) {
+          Vector3 jitteredLightPosition = light->getPosition() + Vector3::randomInUnitSphere() * 0.5f;
+          jitteredLightDirection = (jitteredLightPosition - hitPoint).normalize();
+        } else if (light->isSpotLight() || light->isDirectionalLight()) {
+          jitteredLightDirection = (lightDirection + Vector3::randomInUnitSphere() * 0.1f).normalize();
+        } else if (light->isDirectionalLight()) {
+          jitteredLightDirection = (lightDirection + Vector3::randomInUnitSphere() * 0.1f).normalize();
+        }
 
-      float numShadowRays = 16;
-      float shadowAmount = 0.0f;
+        Ray shadowRay(hitPoint + normal * 0.001f, lightDirection);
+        HitRecord shadowRecord;
+        Object* shadowObject = nullptr;
 
-      if (!scene.intersect(shadowRay, shadowRecord, shadowObject)){
-        finalColor = finalColor + (kd * light->getIntensity(hitPoint) * diff);
-
-        // Speculaires
-        Vector3 viewDir = (ray.getDirection() * -1.0f).normalize();
-        Vector3 reflectDir = ((normal * 2.0f * normal.dot(viewDir)) - viewDir).normalize();
-        float spec = std::pow(std::max(reflectDir.dot(lightDirection), 0.0f), shininess);
-        finalColor = finalColor + (ks * light->getIntensity(hitPoint) * spec);
+        if (!scene.intersect(shadowRay, shadowRecord, shadowObject)){
+          shadowAmount += 1.0f; // / numberShadowaRays;
+        }
       }
+
+      shadowAmount = shadowAmount / numberShadowRays;
+      finalColor = finalColor + (kd * light->getIntensity(hitPoint) * diff * shadowAmount);
+
+      // Speculaires
+      Vector3 viewDir = (ray.getDirection() * -1.0f).normalize();
+      Vector3 reflectDir = ((normal * 2.0f * normal.dot(viewDir)) - viewDir).normalize();
+      float spec = std::pow(std::max(reflectDir.dot(lightDirection), 0.0f), shininess);
+      finalColor = finalColor + (ks * light->getIntensity(hitPoint) * spec);
     }
+
+    // Verifier si la lumiere est bloque par un autre objet
+
 
     // Refléction
     if (reflectivity > 0.0f){

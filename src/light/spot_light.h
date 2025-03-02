@@ -16,11 +16,12 @@ class SpotLight : public Light {
     Vector3 getPosition() const override { return position; }
 
     Vector3 getDirection(const Vector3& position) const override {
-      return (position - this->position).normalize();
+      return (this->position - position).normalize();
     }
 
     Color getIntensity(const Vector3& position) const override {
-      Vector3 lightDirection = (position - this->position).normalize();
+      return intensity;
+      Vector3 lightDirection = this->getDirection(position);
       float angle = std::acos(lightDirection.dot(this->getDirection(position)));
 
       if (angle < cutOffAngle) {

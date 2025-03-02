@@ -16,9 +16,9 @@ class Sphere : public Object {
       Vector3 oc = ray.getOrigin() - center;
       Vector3 dir = ray.getDirection();
 
-      float a = dir.length_squared();
+      float a = dir.lengthSquared();
       float h = oc.dot(dir);
-      float c = oc.length_squared() - radius * radius;
+      float c = oc.lengthSquared() - radius * radius;
 
       float discriminant = h * h - a * c;
 
