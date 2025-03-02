@@ -18,10 +18,10 @@ int main() {
     // Creation de la scene
     Scene scene = Scene(camera);
 
-    // PointLight* light1 = new PointLight(Vector3(20, 10, 0), Color(1.0, 1.0, 1.0));
-    // scene.addLight(light1);
-    DirectionalLight* light3 = new DirectionalLight(Vector3(3,2,0), Color(1.0, 1.0, 0.8));
-    scene.addLight(light3);
+    PointLight* light1 = new PointLight(Vector3(20, 10, 0), Color(1.0, 1.0, 1.0));
+    scene.addLight(light1);
+    // DirectionalLight* light3 = new DirectionalLight(Vector3(3,2,0), Color(1.0, 1.0, 0.8));
+    // scene.addLight(light3);
     // SpotLight* light4 = new SpotLight(Vector3(0, 10, 0), Color(1.0, 1.0, 1.0), M_PI/2);
     // scene.addLight(light4);
     AmbientLight* ambientLight = new AmbientLight(Color(0.02, 0.02, 0.01));

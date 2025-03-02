@@ -47,7 +47,7 @@ Color CastRay(const Scene &scene, Ray &ray, int depth) {
           jitteredLightDirection = (lightDirection + Vector3::randomInUnitSphere() * 0.1f).normalize();
         }
 
-        Ray shadowRay(hitPoint + normal * 0.001f, lightDirection);
+        Ray shadowRay(hitPoint + normal * 0.001f, jitteredLightDirection);
         HitRecord shadowRecord;
         Object* shadowObject = nullptr;
 
