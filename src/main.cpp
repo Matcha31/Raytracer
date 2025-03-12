@@ -3,7 +3,7 @@
 #include "light/ambient_liht.h"
 #include "light/directional_light.h"
 #include "light/spot_light.h"
-#include "uniform_texture.h"
+#include "textures/uniform_texture.h"
 #include "vector3.h"
 #include "camera.h"
 #include "objects/sphere.h"

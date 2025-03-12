@@ -1,8 +1,8 @@
 #ifndef TEXTURE_MATERIAL_H
 #define TEXTURE_MATERIAL_H
 
-#include "vector3.h"
-#include "color.h"
+#include "../vector3.h"
+#include "../color.h"
 
 class TextureMaterial {
 protected:

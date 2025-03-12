@@ -2,7 +2,7 @@
 #define SPHERE_H
 
 #include "object.h"
-#include "../uniform_texture.h"
+#include "../textures/uniform_texture.h"
 
 class Sphere : public Object {
   private:

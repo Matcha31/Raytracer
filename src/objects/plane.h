@@ -2,7 +2,7 @@
 #define PLANE_H
 
 #include "object.h"
-#include "../texture_material.h"
+#include "../textures/texture_material.h"
 #include <cmath>
 
 class Plane : public Object {

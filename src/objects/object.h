@@ -4,7 +4,7 @@
 #include "../color.h"
 #include "../light/light.h"
 #include "../ray.h"
-#include "../texture_material.h"
+#include "../textures/texture_material.h"
 
 class HitRecord {
   public:
