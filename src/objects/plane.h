@@ -2,7 +2,7 @@
 #define PLANE_H
 
 #include "object.h"
-#include "../textures/texture_material.h"
+#include "../textures/texture.h"
 #include <cmath>
 
 class Plane : public Object {
@@ -11,7 +11,7 @@ class Plane : public Object {
     float distanceFromOrigin;
 
   public:
-    Plane(TextureMaterial *texture, const Vector3 &center, const Vector3 &normal) : Object(texture, center) {
+    Plane(Texture *texture, const Vector3 &center, const Vector3 &normal) : Object(texture, center) {
       this->normal = normal.normalize();
       this->distanceFromOrigin = -center.dot(normal);
     }

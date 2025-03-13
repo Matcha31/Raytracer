@@ -8,7 +8,7 @@ class Sphere : public Object {
   private:
     float radius;
   public:
-    Sphere(const Vector3& center, float radius, TextureMaterial *texture) : Object(texture, center), radius(radius) {}
+    Sphere(const Vector3& center, float radius, Texture *texture) : Object(texture, center), radius(radius) {}
 
     bool intersect(const Ray& ray, HitRecord& record) const override {
       // Calculer la distance entre le centre de la sphère et le point d'intersection du rayon

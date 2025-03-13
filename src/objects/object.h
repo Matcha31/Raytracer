@@ -4,7 +4,7 @@
 #include "../color.h"
 #include "../light/light.h"
 #include "../ray.h"
-#include "../textures/texture_material.h"
+#include "../textures/texture.h"
 
 class HitRecord {
   public:
@@ -23,10 +23,10 @@ class HitRecord {
 class Object {
 protected:
     Vector3 center;
-    TextureMaterial* textureMaterial;
+    Texture* texture;
 
 public:
-    Object(TextureMaterial* textureMaterial = nullptr, const Vector3& center = Vector3(0, 0, 0)) : textureMaterial(textureMaterial), center(center) {}
+    Object(Texture* texture = nullptr, const Vector3& center = Vector3(0, 0, 0)) : texture(texture), center(center) {}
     virtual ~Object() = default;
     
     // Intersecter le rayon avec l'objet
@@ -39,7 +39,7 @@ public:
 
     // Récupérer les propriétés du matériau
     void getTextureAt(const Vector3& position, Color &kd, Color &ks, float &ka, float &shininess, float &reflectivity) const {
-        textureMaterial->getProperties(position, kd, ks, ka, shininess, reflectivity);
+        texture->getProperties(position, kd, ks, ka, shininess, reflectivity);
     }
 };
 
