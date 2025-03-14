@@ -27,6 +27,11 @@ public:
     return true;
   }
 
+  Vector3 getJitteredPosition(const Vector3 hitPoint) const override {
+    Vector3 jitteredLightPosition = position + Vector3::randomInUnitSphere() * 0.5f;
+    return (jitteredLightPosition - hitPoint).normalize();
+  }
+
 };
 
 #endif // POINT_LIGHT_H

@@ -27,6 +27,10 @@ class DirectionalLight : public Light {
     return true;
   }
 
+  Vector3 getJitteredPosition(const Vector3 hitPoint) const override {
+    return (getDirection(hitPoint) + Vector3::randomInUnitSphere() * 0.1f).normalize();
+  }
+
 };
 
 #endif // DIRECTIONAL_LIGHT_H

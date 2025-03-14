@@ -21,6 +21,8 @@ class Light {
     virtual bool isDirectionalLight() const { return false; }
     virtual bool isSpotLight() const { return false; }
     virtual bool isAmbientLight() const { return false; }
+
+    virtual Vector3 getJitteredPosition(const Vector3 hitPoint) const = 0;
 };
 
 #endif // LIGHT_H

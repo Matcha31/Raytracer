@@ -5,10 +5,13 @@
 #include "../textures/uniform_texture.h"
 
 class Sphere : public Object {
+  
   private:
     float radius;
+
   public:
-    Sphere(const Vector3& center, float radius, Texture *texture) : Object(texture, center), radius(radius) {}
+
+    Sphere(const Vector3& center, float radius, std::shared_ptr<Material> material) : Object(center, material), radius(radius) {}
 
     bool intersect(const Ray& ray, HitRecord& record) const override {
       // Calculer la distance entre le centre de la sphère et le point d'intersection du rayon
@@ -44,10 +47,6 @@ class Sphere : public Object {
 
     Vector3 getNormal(const Vector3& point) const override {
       return (point - center).normalize();
-    }
-
-    const Vector3 getCenter() const override {
-      return center;
     }
 
 };

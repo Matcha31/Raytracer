@@ -19,6 +19,10 @@ class AmbientLight : public Light {
     }
 
     bool isAmbientLight() const override { return true; }
+
+    Vector3 getJitteredPosition(const Vector3 hitPoint) const override {
+      return Vector3(0.0, 0.0, 0.0);
+    }
 };
 
 #endif // AMBIENT_LIGHT_H

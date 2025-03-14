@@ -5,21 +5,14 @@
 
 class UniformTexture : public Texture {
 private:
-  Color kd, ks;
-  float shininess, reflectivity;
-  static constexpr float ka = 0.2f;
-  // static constexpr float shininess = 50.0f;
-  // static constexpr float reflectivity = 1.0f;
+  Color kd;
 
 public:
-  UniformTexture(Color kd, Color ks, float shininess, float reflectivity) : shininess(shininess), reflectivity(reflectivity), kd(kd), ks(ks) {}
-  
-  void getProperties(const Vector3& position, Color &kd, Color &ks, float &ka, float &shininess, float &reflectivity) const override {
-    kd = this->kd;
-    ks = this->ks;
-    ka = this->ka;
-    shininess = this->shininess;
-    reflectivity = this->reflectivity;
+
+  explicit UniformTexture(const Color& kd) : kd(kd) {}
+
+  Color getTextureAt(const Vector3& hitPoint) const {
+    return kd;
   }
 };
 

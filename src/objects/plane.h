@@ -11,7 +11,7 @@ class Plane : public Object {
     float distanceFromOrigin;
 
   public:
-    Plane(Texture *texture, const Vector3 &center, const Vector3 &normal) : Object(texture, center) {
+    Plane(const Vector3 &center, std::shared_ptr<Material> material, const Vector3 &normal) : Object(center, material) {
       this->normal = normal.normalize();
       this->distanceFromOrigin = -center.dot(normal);
     }
@@ -35,10 +35,6 @@ class Plane : public Object {
 
     Vector3 getNormal(const Vector3 &hitPoint) const override {
       return normal;
-    }
-
-    const Vector3 getCenter() const override {
-      return center;
     }
 };
 
